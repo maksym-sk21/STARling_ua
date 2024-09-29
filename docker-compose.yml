@@ -27,11 +27,11 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: starlingua
-      POSTGRES_USER: starlingua
-      POSTGRES_PASSWORD: 8Mt8W89ifG1FOdp
+      POSTGRES_DB: 
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
       DATABASE_PORT: 5432
-      DATABASE_HOST: cold-bush-8980.flycast
+      DATABASE_HOST: 
     ports:
       - "5540:5432"
     volumes:
