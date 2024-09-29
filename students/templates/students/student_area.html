@@ -1,0 +1,81 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<header>
+    <h1>Добро пожаловать, {{ user.student.name }}!</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="#">Курсы</a></li>
+        <li><a href="#">Книги</a></li>
+        <li><a href="#">Тесты</a></li>
+        <li><a href="#">Личный кабинет</a></li>
+        <li><a href="#">Поддержка</a></li>
+    </ul>
+</nav>
+<main>
+    <section id="remaining-hours">
+        <h2>Оставшиеся часы: {{ client.remaining_hours }}</h2>
+        {% if client.remaining_hours <= 1 %}
+            <p style="color: red;">Оплатите дальнейшее обучение</p>
+            <form method="POST" action="{% url 'students:payment_url' %}">
+                {% csrf_token %}
+                <button type="submit">Оплатить через LiqPay</button>
+            </form>
+        {% endif %}
+    </section>
+    <section id="materials">
+        <h2>Учебные материалы</h2>
+        <ul>
+            {% for material in materials %}
+                <li>
+                    <a href="{% url 'teachers:view_material' material.id %}?download=true" target="_blank">Скачать {{ material.name }}</a> |
+                    <a href="{% url 'teachers:view_material' material.id %}" target="_blank">Просмотреть {{ material.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section id="recommended-materials">
+        <h2>Рекомендации</h2>
+        <!-- Рекомендованные материалы -->
+    </section>
+    <section id="test-results">
+        <h2>Результаты тестов</h2>
+        <!-- Результаты тестов -->
+    </section>
+    <h2>Календарь и расписание</h2>
+    <section id="calendar">
+        <div id='calendar'></div>
+    </section>
+
+</main>
+<footer>
+    <p>&copy; 2024 Ваша образовательная платформа</p>
+</footer>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+
+
+<style>
+    #calendar {
+        max-width: 1500px;
+        margin: 0 auto;
+        height: 800px;
+    }
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'uk',
+        height: 'auto',
+        contentHeight: 800,
+        events: {{ events|safe }},
+    });
+    calendar.render();
+});
+</script>
+{% endblock %}

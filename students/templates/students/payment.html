@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+<body>
+    <h1>Payment</h1>
+    <form method="post" action="{{ liqpay_form.action }}">
+        {% csrf_token %}
+        <input type="hidden" name="data" value="{{ liqpay_form.data.data }}">
+        <input type="hidden" name="signature" value="{{ liqpay_form.data.signature }}">
+        <button type="submit">Pay</button>
+    </form>
+</body>
+</html>
