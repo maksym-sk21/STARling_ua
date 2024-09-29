@@ -1,0 +1,52 @@
+app = "starlingua"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  POETRY_VERSION = "1.8.3"
+  DATABASE_NAME = "starlingua"
+  DATABASE_USER = "starlingua"
+  DATABASE_HOST = "cold-bush-8980.flycast"
+  DATABASE_PORT = "5432"
+  EMAIL_HOST = "smtp.gmail.com"
+  EMAIL_PORT = "587"
+  EMAIL_HOST_USER = "STARLINGUA.eu@gmail.com"
+  DOMAIN_NAME = "starlingua.fly.dev"
+  PORT = "8080"
+
+[secrets]
+  SECRET_KEY = "django-insecure-q+wlzxy&13#u+tto@s@toq8k_(k_v^aov2@kotp(9rv2*j6cw5"
+  LIQPAY_PUBLIC_KEY = "i58576198343"
+  LIQPAY_PRIVATE_KEY = "TupFRCEXeph5WsB6B1tLhF6K4S6h0oPP2jAMcWBX"
+  DATABASE_PASSWORD = "8Mt8W89ifG1FOdp"
+  EMAIL_HOST_PASSWORD = "smmfsarusgkblruh"
+  TELEGRAM_BOT_TOKEN = "7767284133:AAEHu2tQqy2raPJc8AdcSfAHtMYIeooQeOs"
+
+
+[[services]]
+  # Служба для веб-сайта
+  http_service = "web"
+  internal_port = 8080
+
+  [http_service.concurrency]
+    hard_limit = 10
+    soft_limit = 5
+
+  [[http_service.ports]]
+    handlers = ["http"]
+    port = "80"
+
+  [[http_service.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+[[services]]
+  # Служба для Telegram-бота
+  http_service = "bot"
+  internal_port = 8443
+
+  [[http_service.ports]]
+    handlers = ["http"]
+    port = "8443"
+
