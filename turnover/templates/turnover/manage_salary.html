@@ -1,0 +1,57 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Управление зарплатами</h1>
+<div class="mb-3">
+    <a href="{% url 'turnover:add_salary' %}" class="btn btn-primary btn-sm">Добавить запись</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Ученик - Преподаватель</th>
+            <th>Прибыль за месяц</th>
+            <th>Бюджет на месяц</th>
+            <th>ЗП Елена</th>
+            <th>ЗП Мария</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for salary in salaries %}
+        <tr>
+            <td>{{ salary.turnover }}</td>
+            <td>{{ salary.monthly_profit }}</td>
+            <td>{{ salary.monthly_budget }}</td>
+            <td>{{ salary.salary_elena }}</td>
+            <td>{{ salary.salary_maria }}</td>
+            <td>
+                <a href="{% url 'turnover:edit_salary' salary.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                <form action="{% url 'turnover:delete_salary' pk=salary.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this contact?');" class="btn btn-danger btn-sm">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">Нет данных для отображения</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Суммы</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Общая прибыль за месяц</th>
+        <th>Общий бюджет на месяц</th>
+        <th>Общая ЗП Елена</th>
+        <th>Общая ЗП Мария</th>
+    </tr>
+    <tr>
+        <td>{{ total.total_monthly_profit }}</td>
+        <td>{{ total.total_monthly_budget }}</td>
+        <td>{{ total.total_salary_elena }}</td>
+        <td>{{ total.total_salary_maria }}</td>
+    </tr>
+</table>
+{% endblock %}

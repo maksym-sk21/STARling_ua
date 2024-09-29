@@ -1,0 +1,36 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+  <h1>Список учителей</h1>
+  <a href="{% url 'turnover:add_teacher' %}" class="btn btn-primary">Добавить учителя</a>
+  <table>
+    <tr>
+      <th>Имя</th>
+      <th>Фамилия</th>
+      <th>Номер телефона</th>
+      <th>Закрепленные студенты</th>
+      <th>Действия</th>
+    </tr>
+    {% for teacher in teachers %}
+    <tr>
+      <td>{{ teacher.name }}</td>
+      <td>{{ teacher.surname }}</td>
+      <td>{{ teacher.phone_number }}</td>
+      <td>
+        {% for student in teacher.student.all %}
+          {{ student.name }} {{ student.surname }}<br>
+        {% empty %}
+          Нет студентов
+        {% endfor %}
+      </td>
+      <td>
+        <a href="{% url 'turnover:assign_student' teacher.id %}">Закрепить студента</a>
+        {% for student in teacher.student.all %}
+        <a href="{% url 'turnover:unassign_student' teacher.id student.id %}" class="btn btn-danger btn-sm">Открепить {{ student.name }}</a>
+        {% endfor %}
+        <a href="{% url 'turnover:delete_teacher' teacher.id %}" class="btn btn-danger btn-sm">Удалить</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
