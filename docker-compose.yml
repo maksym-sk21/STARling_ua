@@ -27,11 +27,11 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: 
-      POSTGRES_USER: 
-      POSTGRES_PASSWORD: 
+      POSTGRES_DB: starlingua
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: starlingua
       DATABASE_PORT: 5432
-      DATABASE_HOST: 
+      DATABASE_HOST: 127.0.0.1
     ports:
       - "5540:5432"
     volumes:
