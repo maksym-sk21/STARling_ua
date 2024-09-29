@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Перенаправление на оплату</title>
+</head>
+<body>
+    <form method="post" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+        <input type="hidden" name="data" value="{{ data }}">
+        <input type="hidden" name="signature" value="{{ signature }}">
+        <input type="submit" value="Оплатить">
+    </form>
+</body>
+</html>
