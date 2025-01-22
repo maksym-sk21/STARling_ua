@@ -1,0 +1,59 @@
+{% extends "users/base.html" %}
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/main.min.js'></script>
+
+{% block content %}
+<header>
+    <h1>Редактирование расписания</h1>
+</header>
+
+<main>
+    <section id="calendar">
+        <h2>Календарь и планирование</h2>
+        <div id="calendar"></div>
+    </section>
+
+    <section id="add-lesson">
+        <h2>Добавить урок</h2>
+        <form method="post" action="{% url 'schedule:edit_schedule' %}">
+            {% csrf_token %}
+            <label for="student_id">Студент:</label>
+            <select name="student_id" id="student_id">
+                {% for student in user.teacher.student.all %}
+                <option value="{{ student.id }}">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="start_time">Начало:</label>
+            <input type="datetime-local" name="start_time" id="start_time">
+            <label for="duration">Длительность:</label>
+            <input type="datetime-local" name="duration" id="duration">
+            <button type="submit">Добавить урок</button>
+        </form>
+    </section>
+    {% if lessons %}
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+           var calendarEl = document.getElementById('calendar');
+
+           var calendar = new FullCalendar.Calendar(calendarEl, {
+               initialView: 'dayGridMonth',
+               events: [
+                   {% for lesson in lessons %}
+                   {
+                       start: '{{ lesson.start_time|date:"Y-m-dTH:i:s" }}',
+                       end: '{{ lesson.end_time|date:"Y-m-dTH:i:s" }}',
+                       title: '{{ lesson.student.name }}',
+                   },
+                   {% endfor %}
+               ]
+           });
+
+           calendar.render();
+       });
+   </script>
+{% else %}
+   <p>В вашем календаре нет запланированных уроков.</p>
+{% endif %}
+</main>
+
+{% endblock %}

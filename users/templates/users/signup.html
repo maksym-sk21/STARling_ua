@@ -1,0 +1,50 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+
+<div>
+    <h2>Реєстрація</h2>
+</div>
+
+<form method="post" action="{% url 'users:signup' %}">
+    {% csrf_token %}
+    <div>
+        <label> Ім'я користувача:
+            {{ form.username }}
+        </label>
+        <span>{{ form.errors.username }}</span>
+    </div>
+    <br>
+    <div>
+        <label> Поштова адреса (Email):
+            {{ form.email }}
+        </label>
+        <span>{{ form.errors.email }}</span>
+    </div>
+    <br>    
+    <div>
+        <label> Пароль:
+            {{ form.password1 }}
+        </label>
+        <span>{{ form.errors.password1 }}</span>
+    </div>
+    <div>
+        <label> Повторіть пароль:
+            {{ form.password2 }}
+        </label>
+        <span>{{ form.errors.password2 }}</span>
+    </div>
+    <div>
+        <label> Роль:
+            {{ form.role }}
+        </label>
+        <span>{{ form.errors.role }}</span>
+    </div>
+    <div class="grid">
+        <button type="submit">Підтвердити</button>
+        <button type="reset" class="secondary">Зкинути</button>
+    </div>
+</form>
+
+{% endblock %}
+

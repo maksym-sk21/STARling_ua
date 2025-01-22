@@ -1,0 +1,68 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<header>
+    <h1>Добро пожаловать, {{ manager.name }}!</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="{% url 'turnover:manage_turnover' %}">Бухгалтерия</a></li>
+    </ul>
+</nav>
+<main>
+    <section id="update-turnover">
+        <button id="update-period-button">Обновить период учета</button>
+        <p id="update-message"></p>
+    </section>
+
+    <section id="excel-files">
+        <h2>Архив отчетов:</h2>
+        {% if report_files %}
+            <ul>
+                {% for report in report_files %}
+                    <li>
+                        <a href="{% url 'managers:view_report' report %}?download=true" target="_blank">Завантажити {{ report }}</a> |
+                        <a href="{% url 'managers:view_report' report %}" target="_blank">Дивитись {{ report }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Файлы не найдены.</p>
+        {% endif %}
+    </section>
+    <section id="teachers-salaries">
+        <h2>Зарплаты преподавателей:</h2>
+        {% if teachers %}
+            <ul>
+                {% for teacher in teachers %}
+                    <li>{{ teacher.name }} {{ teacher.surname }} - {{ teacher.salary }} грн.</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Преподаватели не найдены.</p>
+        {% endif %}
+    </section>
+</main>
+
+<script>
+document.getElementById("update-period-button").addEventListener("click", function() {
+    fetch("{% url 'managers:manager_area' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: new URLSearchParams({
+            "update_period": "1"
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("update-message").textContent = data.message;
+    })
+    .catch(error => {
+        console.error("Ошибка:", error);
+        document.getElementById("update-message").textContent = "Ошибка обновления.";
+    });
+});
+</script>
+{% endblock %}

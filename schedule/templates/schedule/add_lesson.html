@@ -1,0 +1,30 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<header>
+    <h1>Добавить новое занятие</h1>
+</header>
+<main>
+    <form action="{% url 'schedule:add_lesson' %}" method="post">
+        {% csrf_token %}
+        <label for="student_id">Студент:</label>
+            <select name="student_id" id="student_id">
+                {% for student in user.teacher.student.all %}
+                <option value="{{ student.id }}">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+        <label for="lesson-date">Дата:</label>
+        <input type="date" id="lesson-date" name="date" required>
+        <label for="lesson-start">Начало:</label>
+        <input type="time" id="lesson-start" name="start_time" required>
+        <label for="duration">Длительность:</label>
+            <select id="duration" name="duration" required>
+                <option value="0.5">0.5 часа</option>
+                <option value="1.0">1 час</option>
+                <option value="1.5">1.5 часа</option>
+                <option value="2.0">2 часа</option>
+            </select>
+        <button type="submit">Добавить занятие</button>
+    </form>
+</main>
+{% endblock %}
