@@ -12,17 +12,15 @@ app = 'starling-ua'
   POETRY_VERSION = "1.8.3"
   EMAIL_HOST = "smtp.gmail.com"
   EMAIL_PORT = "587"
-  EMAIL_HOST_USER = "STARLINGUA.eu@gmail.com"
+  EMAIL_HOST_USER = ""
   DOMAIN_NAME = "starling-ua.fly.dev"
   PORT = "8080"
 
 [secrets]
-  SECRET_KEY = "django-insecure-q+wlzxy&13#u+tto@s@toq8k_(k_v^aov2@kotp(9rv2*j6cw5"
-  DATABASE_URL = "postgres://starling_ua:qRUTdD89o05d0RG@starlinguadb.flycast:5432/starling_ua"
-  LIQPAY_PUBLIC_KEY = "i58576198343"
-  LIQPAY_PRIVATE_KEY = "TupFRCEXeph5WsB6B1tLhF6K4S6h0oPP2jAMcWBX"
-  EMAIL_HOST_PASSWORD = "smmfsarusgkblruh"
-  TELEGRAM_BOT_TOKEN = "7767284133:AAEHu2tQqy2raPJc8AdcSfAHtMYIeooQeOs"
+  SECRET_KEY = ""
+  DATABASE_URL = ""
+  EMAIL_HOST_PASSWORD = ""
+  TELEGRAM_BOT_TOKEN = ""
 
 
 [[services]]
