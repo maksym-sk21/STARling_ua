@@ -1,0 +1,56 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Управление общим оборотом</h1>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Загальні годинни з минулого періоду</th>
+            <th>Загальний залишок з минулого періоду</th>
+            <th>Загальні години поточного періоду</th>
+            <th>Загальна оплата поточного періоду</th>
+            <th>Загальні години</th>
+            <th>Загальний дохід</th>
+            <th>загальний бюджет школи</th>
+            <th>Загальний бюджет Елены</th>
+            <th>Загальний бюджет Марии</th>
+            <th>Загальний дохід за місяць</th>
+            <th>Загальний бюджет на місяць</th>
+            <th>Зарплата Елены</th>
+            <th>Зарплата Марии</th>
+            <th>Загальна вартість години</th>
+            <th>Проведено годин</th>
+            <th>Загальна оплачена сума</th>
+            <th>Загальний залишок годин</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for total_turnover in total_turnovers %}
+        <tr>
+            <td>{{ total_turnover.total_previous_hours }}</td>
+            <td>{{ total_turnover.total_previous_balance }}</td>
+            <td>{{ total_turnover.total_current_hours }}</td>
+            <td>{{ total_turnover.total_current_payment }}</td>
+            <td>{{ total_turnover.total_total_hours }}</td>
+            <td>{{ total_turnover.total_profit }}</td>
+            <td>{{ total_turnover.total_school_budget }}</td>
+            <td>{{ total_turnover.total_budget_elena }}</td>
+            <td>{{ total_turnover.total_budget_maria }}</td>
+            <td>{{ total_turnover.total_monthly_profit }}</td>
+            <td>{{ total_turnover.total_monthly_budget }}</td>
+            <td>{{ total_turnover.total_salary_elena }}</td>
+            <td>{{ total_turnover.total_salary_maria }}</td>
+            <td>{{ total_turnover.total_hourly_rate }}</td>
+            <td>{{ total_turnover.total_hours_spent }}</td>
+            <td>{{ total_turnover.total_money_spent }}</td>
+            <td>{{ total_turnover.total_remaining_hours }}</td>
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="17">Немає даних для відображення</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

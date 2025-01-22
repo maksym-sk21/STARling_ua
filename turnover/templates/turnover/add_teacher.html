@@ -1,0 +1,11 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+  <h1>Додати вчителя</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Додати</button>
+  </form>
+  <a href="{% url 'turnover:teacher_list' %}">Назад до списку вчителів</a>
+{% endblock %}

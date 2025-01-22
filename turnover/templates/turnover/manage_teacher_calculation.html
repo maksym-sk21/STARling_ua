@@ -1,0 +1,55 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Управління розрахунками викладачів</h1>
+<div class="mb-3">
+    <a href="{% url 'turnover:add_teacher_calculation' %}" class="btn btn-primary btn-sm">Додати запис</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Учень - Викладач</th>
+            <th>Вартість години</th>
+            <th>Проведено годин</th>
+            <th>Заробітня плата викладача</th>
+            <th>Бюджет викладача</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for teacher_calculation in teacher_calculations %}
+        <tr>
+            <td>{{ teacher_calculation.turnover }}</td>
+            <td>{{ teacher_calculation.hourly_rate }}</td>
+            <td>{{ teacher_calculation.hours_spent }}</td>
+            <td>{{ teacher_calculation.salary_teacher }}</td>
+            <td>{{ teacher_calculation.budget_teacher }}</td>
+            <td>
+                <a href="{% url 'turnover:edit_teacher_calculation' teacher_calculation.pk %}" class="btn btn-warning btn-sm">Редагувати</a>
+                <form action="{% url 'turnover:delete_teacher_calculation' pk=teacher_calculation.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this contact?');" class="btn btn-danger btn-sm">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Немає даних для відображення</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Суми</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Загальна вартість години</th>
+        <th>Загальна заробітня плата викладачів</th>
+        <th>Сума проведених годин</th>
+    </tr>
+    <tr>
+        <td>{{ total.avg_hourly_rate }}</td>
+        <td>{{ total.total_salary_teacher }}</td>
+        <td>{{ total.total_hours_spent }}</td>
+    </tr>
+</table>
+{% endblock %}

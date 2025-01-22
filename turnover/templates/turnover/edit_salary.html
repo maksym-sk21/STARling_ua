@@ -1,0 +1,11 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Редагувати заробітню плату</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a href="{% url 'turnover:manage_salary' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

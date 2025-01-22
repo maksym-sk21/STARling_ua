@@ -1,0 +1,55 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Управління клієнтами</h1>
+<div class="mb-3">
+    <a href="{% url 'turnover:add_client' %}" class="btn btn-primary btn-sm">Додати запис</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Учень - Викладач</th>
+            <th>Вартість години</th>
+            <th>Витрачено грошей</th>
+            <th>Залишок годин</th>
+            <th>Залишок грошей</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.turnover }}</td>
+            <td>{{ client.hourly_rate }}</td>
+            <td>{{ client.money_spent }}</td>
+            <td>{{ client.remaining_hours }}</td>
+            <td>{{ client.remaining_money }}</td>
+            <td>
+                <a href="{% url 'turnover:edit_client' client.pk %}" class="btn btn-warning btn-sm">Редагувати</a>
+                <form action="{% url 'turnover:delete_client' pk=client.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this contact?');" class="btn btn-danger btn-sm">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Немає даних для відображення</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Суми</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Загальна вартість години</th>
+        <th>Загальна витраченна сума</th>
+        <th>Загальний залишок годин</th>
+    </tr>
+    <tr>
+        <td>{{ total.avg_hourly_rate }}</td>
+        <td>{{ total.total_money_spent }}</td>
+        <td>{{ total.total_remaining_hours }}</td>
+    </tr>
+</table>
+{% endblock %}

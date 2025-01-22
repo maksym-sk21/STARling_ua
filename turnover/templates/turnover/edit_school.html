@@ -1,0 +1,11 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Редагувати запис про школу</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a href="{% url 'turnover:manage_school' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

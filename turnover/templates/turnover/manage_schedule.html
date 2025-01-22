@@ -1,0 +1,14 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h1>Редагувати розклад</h1>
+<a href="{% url 'turnover:add_lesson' %}">Додати урок</a>
+<ul>
+    {% for lesson in lessons %}
+        <li>{{ lesson.date }} - {{ lesson.start_time }} - {{ lesson.end_time }} - {{ lesson.teacher.name }} - {{ lesson.student.name }} - Conducted: {{ lesson.conducted }}
+            <a href="{% url 'turnover:edit_lesson' lesson.id %}">Редагувати</a>
+            <a href="{% url 'turnover:delete_lesson' lesson.id %}">Видалити</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+
+{% if messages %}
+<div>
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<h1>Оборот-Дохів-Витрати</h1>
+<div class="mb-3">
+    <a href="{% url 'turnover:add_turnover' %}" class="btn btn-primary btn-sm">Додати запис</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Учень</th>
+            <th>Викладач</th>
+            <th>Години з минулого періоду</th>
+            <th>Залишок грошей з минулого періоду</th>
+            <th>Години в поточному періоді</th>
+            <th>Оплата в поточному періоді</th>
+            <th>Закгальна кількість годин</th>
+            <th>Дохід</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for turnover in turnovers %}
+        <tr>
+            <td>{{ turnover.student.name }} {{ turnover.student.surname }}</td>
+            <td>{{ turnover.teacher.name }}</td>
+            <td>{{ turnover.previous_hours }}</td>
+            <td>{{ turnover.previous_balance }}</td>
+            <td>{{ turnover.current_hours }}</td>
+            <td>{{ turnover.current_payment }}</td>
+            <td>{{ turnover.total_hours }}</td>
+            <td>{{ turnover.profit }}</td>
+            <td>
+                <a href="{% url 'turnover:edit_turnover' pk=turnover.pk %}" class="btn btn-warning btn-sm">Редагувати</a>
+                <form action="{% url 'turnover:delete_turnover' pk=turnover.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this contact?');" class="btn btn-danger btn-sm">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9">Немає даних для відображення</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Суми</h2>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Загальна кількість годин</th>
+        <th>Загальний залишок оплати з минулого періоду</th>
+        <th>Загальна кількість годин в поточному пепріоді</th>
+        <th>Загальна оплата в поточному періоді</th>
+        <th>Загальний дохід</th>
+    </tr>
+    <tr>
+        <td>{{ total.total_previous_hours }}</td>
+        <td>{{ total.total_previous_balance }}</td>
+        <td>{{ total.total_current_hours }}</td>
+        <td>{{ total.total_current_payment }}</td>
+        <td>{{ total.total_profit }}</td>
+    </tr>
+</table>
+{% endblock %}
