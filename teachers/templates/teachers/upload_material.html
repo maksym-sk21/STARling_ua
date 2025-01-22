@@ -1,0 +1,10 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<h2>Завантаження матеріалу</h2>
+<form action="{% url 'teachers:upload_material' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Завантажити файл</button>
+</form>
+{% endblock %}

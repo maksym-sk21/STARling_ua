@@ -1,0 +1,93 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<header>
+    <h1>Вітаємо, {{ user.teacher.name }}!</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="{% url 'schedule:add_lesson' %}">Добавить урок</a></li>
+        <li><a href="{% url 'schedule:schedule_view' %}">Расписание</a></li>
+    </ul>
+</nav>
+<main>
+    <section id="manage-students">
+        <h2>Учні</h2>
+        <ul>
+            {% for student in user.teacher.student.all %}
+                <li>{{ student.name }} {{ student.surname }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section id="resources">
+        <h2>Навчальний матеріал</h2>
+        <form action="{% url 'teachers:upload_material' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file">
+            <button type="submit">Завантажити файл</button>
+        </form>
+        <ul>
+            {% for material in user.teacher.materials.all %}
+                <li>
+                    <a href="{% url 'teachers:view_material' material.id %}?download=true" target="_blank">Завантажити {{ material.name }}</a> |
+                    <a href="{% url 'teachers:view_material' material.id %}" target="_blank">Дивитись {{ material.name }}</a> |
+                    <a href="{% url 'teachers:delete_material' material.id %}" class="delete-link">Видалити</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section id="salary-info">
+        <h2>Заробітня плата</h2>
+        <p>Заробітня плата за поточний період: {{ teacher.salary }} грн.</p>
+    </section>
+    <h2>Календар</h2>
+    <section id="calendar">
+        <div id='calendar'></div>
+    </section>
+</main>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+
+<style>
+    #calendar {
+        max-width: 1500px;
+        margin: 0 auto;
+        height: 800px;
+    }
+
+
+    .fc .fc-daygrid-day-top {
+        font-size: 14px;
+    }
+
+
+
+    .fc .fc-daygrid-event {
+        font-size: 12px;
+        color: #000000;
+    }
+
+    .conducted-lesson {
+        background-color: #228b22;
+        text-decoration: line-through; /* зачёркивание текста */
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'uk',
+        events: {{ events|safe }},
+        height: 'auto',
+        contentHeight: 800,
+        eventClassNames: function(arg) {
+            return arg.event.extendedProps.classNames || '';
+        }
+    });
+    calendar.render();
+});
+</script>
+{% endblock %}

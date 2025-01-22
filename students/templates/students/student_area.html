@@ -1,0 +1,62 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<header>
+    <h1>Вітаємо, {{ user.student.name }} {{ user.student.surname }}!</h1>
+</header>
+
+<main>
+    <section id="remaining-hours">
+        <h2>Залишок годин: {{ client.remaining_hours }}</h2>
+        {% if client.remaining_hours <= 1 %}
+            <p style="color: red;">Оплатіть подальше навчання</p>
+            <form method="POST" action="{% url 'students:payment_url' %}">
+                {% csrf_token %}
+                <button type="submit">Оплатити за допомогою LiqPay</button>
+            </form>
+        {% endif %}
+    </section>
+    <section id="materials">
+        <h2>Навчальні матеріали</h2>
+        <ul>
+            {% for material in materials %}
+                <li>
+                    <a href="{% url 'teachers:view_material' material.id %}?download=true" target="_blank">Завантажити {{ material.name }}</a> |
+                    <a href="{% url 'teachers:view_material' material.id %}" target="_blank">Дивитись {{ material.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <h2>Календар</h2>
+    <section id="calendar">
+        <div id='calendar'></div>
+    </section>
+
+</main>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+
+
+<style>
+    #calendar {
+        max-width: 1500px;
+        margin: 0 auto;
+        height: 800px;
+    }
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'uk',
+        height: 'auto',
+        contentHeight: 800,
+        events: {{ events|safe }},
+    });
+    calendar.render();
+});
+</script>
+{% endblock %}
