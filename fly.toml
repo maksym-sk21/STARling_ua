@@ -1,0 +1,66 @@
+# fly.toml app configuration file generated for starling-ua on 2024-10-09T12:50:32+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'starling-ua'
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  POETRY_VERSION = "1.8.3"
+  EMAIL_HOST = "smtp.gmail.com"
+  EMAIL_PORT = "587"
+  EMAIL_HOST_USER = "STARLINGUA.eu@gmail.com"
+  DOMAIN_NAME = "starling-ua.fly.dev"
+  PORT = "8080"
+
+[secrets]
+  SECRET_KEY = "django-insecure-q+wlzxy&13#u+tto@s@toq8k_(k_v^aov2@kotp(9rv2*j6cw5"
+  DATABASE_URL = "postgres://starling_ua:qRUTdD89o05d0RG@starlinguadb.flycast:5432/starling_ua"
+  LIQPAY_PUBLIC_KEY = "i58576198343"
+  LIQPAY_PRIVATE_KEY = "TupFRCEXeph5WsB6B1tLhF6K4S6h0oPP2jAMcWBX"
+  EMAIL_HOST_PASSWORD = "smmfsarusgkblruh"
+  TELEGRAM_BOT_TOKEN = "7767284133:AAEHu2tQqy2raPJc8AdcSfAHtMYIeooQeOs"
+
+
+[[services]]
+  http_service = "web"
+  internal_port = 8080
+  protocol = "tcp"
+
+  [http_service.concurrency]
+    hard_limit = 10
+    soft_limit = 5
+
+  [[http_service.ports]]
+    handlers = ["http"]
+    port = "80"
+
+  [[http_service.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+[[services]]
+  http_service = "bot"
+  internal_port = 8443
+  protocol = "tcp"
+
+  [[https_service.ports]]
+    handlers = ["https"]
+    port = "8443"
+
+[[services]]
+  process = "celery"
+  internal_port = 8000
+  protocol = "tcp"
+
+  [[http_service.ports]]
+    handlers = ["tcp"]
+    port = "8000"
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1

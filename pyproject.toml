@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "starlingua-diploma"
+version = "0.1.0"
+description = ""
+authors = ["Maksym"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.6"
+dj-database-url = "^2.2.0"
+django-environ = "^0.11.2"
+psycopg2-binary = "^2.9.9"
+django-liqpay = "^1.1"
+google-api-python-client = "^2.138.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.1"
+pandas = "^2.2.2"
+openpyxl = "^3.1.5"
+django-calendarium = "^1.3.4"
+urllib3 = "^2.2.3"
+python-telegram-bot = {extras = ["webhooks"], version = "^21.6"}
+daphne = "^4.1.2"
+celery = "^5.4.0"
+django-celery-beat = "^2.7.0"
+redis = "^5.1.1"
+django-redis = "^5.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
